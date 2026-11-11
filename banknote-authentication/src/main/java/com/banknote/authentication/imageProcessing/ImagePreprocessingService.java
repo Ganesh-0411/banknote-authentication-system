@@ -11,13 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Reusable OpenCV Java Preprocessing Service.
@@ -36,6 +30,7 @@ public class ImagePreprocessingService {
     public ImagePreprocessingService(ModelConfig modelConfig, OpenCVConfig openCVConfig) {
         this.modelConfig = modelConfig;
         this.openCVConfig = openCVConfig;
+        logger.info("ImagePreprocessingService initialized with OpenCV: {}", this.openCVConfig != null);
     }
 
     /**
@@ -207,7 +202,6 @@ public class ImagePreprocessingService {
      * Convert ND4J INDArray tensor of shape [1, 3, height, width] back into OpenCV BGR Mat (0-255).
      */
     public Mat nd4jTensorToBgrMat(INDArray tensor) {
-        int channels = (int) tensor.size(1);
         int height = (int) tensor.size(2);
         int width = (int) tensor.size(3);
 

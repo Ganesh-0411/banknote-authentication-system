@@ -1,7 +1,6 @@
 package com.banknote.authentication.training;
 
 import com.banknote.authentication.anomalyDetection.MSECalculator;
-import com.banknote.authentication.anomalyDetection.ThresholdCalibrationService;
 import com.banknote.authentication.config.ModelConfig;
 import com.banknote.authentication.config.OpenCVConfig;
 import com.banknote.authentication.deepLearning.*;

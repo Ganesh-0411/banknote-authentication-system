@@ -2,7 +2,6 @@ package com.banknote.authentication.controller;
 
 import com.banknote.authentication.dto.*;
 import com.banknote.authentication.entity.BanknoteRecord;
-import com.banknote.authentication.entity.ModelInformation;
 import com.banknote.authentication.entity.User;
 import com.banknote.authentication.repository.ModelInformationRepository;
 import com.banknote.authentication.security.CustomUserDetails;

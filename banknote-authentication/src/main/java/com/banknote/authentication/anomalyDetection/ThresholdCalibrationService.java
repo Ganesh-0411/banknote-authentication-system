@@ -3,7 +3,6 @@ package com.banknote.authentication.anomalyDetection;
 import com.banknote.authentication.config.ModelConfig;
 import com.banknote.authentication.deepLearning.BanknoteDatasetLoader;
 import com.banknote.authentication.deepLearning.ModelPersistenceService;
-import com.banknote.authentication.entity.ModelInformation;
 import com.banknote.authentication.repository.ModelInformationRepository;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.nd4j.linalg.api.ndarray.INDArray;

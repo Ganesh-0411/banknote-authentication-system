@@ -4,7 +4,6 @@ import com.banknote.authentication.anomalyDetection.AnomalyDetectionService;
 import com.banknote.authentication.config.ModelConfig;
 import com.banknote.authentication.dto.AnalysisResponse;
 import com.banknote.authentication.entity.BanknoteRecord;
-import com.banknote.authentication.entity.ScreeningResult;
 import com.banknote.authentication.entity.User;
 import com.banknote.authentication.imageProcessing.ImagePreprocessingService;
 import com.banknote.authentication.repository.BanknoteRepository;
@@ -125,8 +124,9 @@ public class BanknoteService {
         }
 
         long processingTime = System.currentTimeMillis() - startTime;
+        logger.info("Screening completed: denom={}, result={}, time={}ms", denomination, outcome.getResult(), processingTime);
 
-        // 6. Persist to MySQL
+        // 6. Persist to Database
         BanknoteRecord record = new BanknoteRecord();
         record.setUser(currentUser);
         record.setOriginalFilename(originalFilename);

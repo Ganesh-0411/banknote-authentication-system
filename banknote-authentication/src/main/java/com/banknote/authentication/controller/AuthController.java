@@ -1,7 +1,6 @@
 package com.banknote.authentication.controller;
 
 import com.banknote.authentication.dto.RegisterRequest;
-import com.banknote.authentication.entity.User;
 import com.banknote.authentication.security.CustomUserDetails;
 import com.banknote.authentication.service.UserService;
 import jakarta.validation.Valid;

@@ -6,6 +6,9 @@ echo   BanknoteGuard DL4J - Banknote Authentication System Launcher
 echo ===================================================================
 
 cd /d "%~dp0"
+if exist "banknote-authentication\pom.xml" (
+    cd banknote-authentication
+)
 
 :: Ensure standard Windows directories are in PATH
 set "PATH=%PATH%;C:\Windows\System32;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows"
@@ -60,7 +63,7 @@ if exist "C:\Windows\System32\curl.exe" (
     echo [INFO] Downloading via curl...
     "C:\Windows\System32\curl.exe" -L -o "%ZIP_FILE%" "https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.zip"
     if exist "%ZIP_FILE%" (
-        if exist "C:\Windows\System32\tar.exe" "C:\Windows\System32\tar.exe" -xf "%ZIP_FILE%" -C "%WRAPPER_DIR%"
+        "C:\Windows\System32\tar.exe" -xf "%ZIP_FILE%" -C "%WRAPPER_DIR%"
         del /f /q "%ZIP_FILE%" >nul 2>nul
     )
     if exist "%PORTABLE_MVN%" goto start_app

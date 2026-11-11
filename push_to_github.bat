@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 
 echo ===================================================================
-echo   Pushing Banknote Authentication System to GitHub
+echo   Updating Banknote Authentication System on GitHub
 echo   Target: https://github.com/Ganesh-0411/banknote-authentication-system.git
 echo ===================================================================
 echo.
@@ -61,7 +61,7 @@ exit /b 1
 echo [OK] Using Git: !GIT_BIN!
 echo.
 
-:: 2. Initialize Git repository
+:: 2. Initialize Git repository if needed
 if not exist ".git" (
     echo [INFO] Initializing Git repository...
     "!GIT_BIN!" init
@@ -74,36 +74,37 @@ if not exist ".git" (
 "!GIT_BIN!" remote add origin https://github.com/Ganesh-0411/banknote-authentication-system.git
 echo [OK] Remote set to: https://github.com/Ganesh-0411/banknote-authentication-system.git
 
-:: 4. Stage and commit
-echo.
-echo [INFO] Staging all project files (ignoring build artifacts via .gitignore)...
-"!GIT_BIN!" add .
-
-:: Configure dummy git user if none set
+:: 4. Configure git user if none set
 "!GIT_BIN!" config user.name >nul 2>nul
 if %ERRORLEVEL% neq 0 (
     "!GIT_BIN!" config user.name "Ganesh-0411"
     "!GIT_BIN!" config user.email "ganesh@users.noreply.github.com"
 )
 
-"!GIT_BIN!" commit -m "Complete Deep Learning Banknote Authentication System using DL4J CNN Autoencoder, OpenCV Java, and Spring Boot"
-
-:: 5. Push to GitHub
+:: 5. Stage and commit
 echo.
-echo [INFO] Pushing code to GitHub (main branch)...
+echo [INFO] Staging all project files (ignoring build artifacts via .gitignore)...
+"!GIT_BIN!" add .
+
+echo [INFO] Creating commit...
+"!GIT_BIN!" commit -m "Update codebase: zero warnings, comprehensive documentation, and production configurations" --allow-empty
+
+:: 6. Push to GitHub
+echo.
+echo [INFO] Pushing latest code to GitHub (main branch)...
 "!GIT_BIN!" push -u origin main --force
 
 if %ERRORLEVEL% equ 0 (
     echo.
     echo ===================================================================
-    echo   [SUCCESS] Code successfully pushed to your GitHub repository!
-    echo   View your repository at:
+    echo   [SUCCESS] Code successfully updated on your GitHub repository!
+    echo   View online:
     echo   https://github.com/Ganesh-0411/banknote-authentication-system
     echo ===================================================================
 ) else (
     echo.
-    echo [INFO] If a GitHub Authentication prompt appears in your browser,
-    echo        complete the login and re-run push_to_github.bat.
+    echo [INFO] If GitHub prompted you to sign in via your browser,
+    echo        complete the authorization and re-run push_to_github.bat.
 )
 
 pause

@@ -1,6 +1,5 @@
 package com.banknote.authentication.anomalyDetection;
 
-import com.banknote.authentication.config.ModelConfig;
 import com.banknote.authentication.entity.ScreeningResult;
 import com.banknote.authentication.imageProcessing.ImagePreprocessingService;
 import com.banknote.authentication.service.DeepLearningService;
@@ -20,14 +19,18 @@ public class AnomalyDetectionService {
 
     private final DeepLearningService deepLearningService;
     private final MSECalculator mseCalculator;
-    private final ModelConfig modelConfig;
+
+    public AnomalyDetectionService(DeepLearningService deepLearningService,
+                                   MSECalculator mseCalculator) {
+        this.deepLearningService = deepLearningService;
+        this.mseCalculator = mseCalculator;
+    }
 
     public AnomalyDetectionService(DeepLearningService deepLearningService,
                                    MSECalculator mseCalculator,
-                                   ModelConfig modelConfig) {
+                                   com.banknote.authentication.config.ModelConfig modelConfig) {
         this.deepLearningService = deepLearningService;
         this.mseCalculator = mseCalculator;
-        this.modelConfig = modelConfig;
     }
 
     public static class DetectionOutcome {

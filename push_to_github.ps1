@@ -1,5 +1,5 @@
 Write-Host "===================================================================" -ForegroundColor Cyan
-Write-Host "  Pushing Banknote Authentication System to GitHub                 " -ForegroundColor Cyan
+Write-Host "  Updating Banknote Authentication System on GitHub                " -ForegroundColor Cyan
 Write-Host "  Repository: https://github.com/Ganesh-0411/banknote-authentication-system.git" -ForegroundColor Gray
 Write-Host "===================================================================" -ForegroundColor Cyan
 
@@ -55,7 +55,7 @@ if (-not $userName) {
     & $gitPath config user.email "ganesh@users.noreply.github.com"
 }
 
-& $gitPath commit -m "Complete Deep Learning Banknote Authentication System using DL4J CNN Autoencoder, OpenCV Java, and Spring Boot"
+& $gitPath commit -m "Update codebase: zero warnings, comprehensive documentation, and production configurations" --allow-empty
 & $gitPath push -u origin main --force
 
-Write-Host "`n[SUCCESS] Code pushed to: https://github.com/Ganesh-0411/banknote-authentication-system" -ForegroundColor Green
+Write-Host "`n[SUCCESS] Code updated at: https://github.com/Ganesh-0411/banknote-authentication-system" -ForegroundColor Green

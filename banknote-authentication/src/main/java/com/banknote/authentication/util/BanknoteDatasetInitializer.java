@@ -13,7 +13,6 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 /**
  * Automatically initializes genuine Indian currency sample datasets on application startup
@@ -122,8 +121,6 @@ public class BanknoteDatasetInitializer implements ApplicationRunner {
         Graphics2D g = img.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-        Random rand = new Random(seed);
 
         // 1. Banknote Base Color
         g.setColor(baseColor);
