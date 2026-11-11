@@ -1,0 +1,197 @@
+/* ==========================================================================
+   Fintech Design System: Banknote Deep Learning Authentication System
+   Palette:
+     Primary: Navy Blue #101B35
+     Secondary: Royal Blue #2563EB
+     Background: #F4F6FA
+     Card Surface: #FFFFFF
+     Success: #16A34A
+     Danger: #DC2626
+     Warning: #EAB308
+   ========================================================================== */
+
+:root {
+    --primary-navy: #101B35;
+    --navy-light: #1A294C;
+    --royal-blue: #2563EB;
+    --royal-blue-hover: #1D4ED8;
+    --bg-light: #F4F6FA;
+    --card-surface: #FFFFFF;
+    --text-primary: #0F172A;
+    --text-muted: #64748B;
+    --border-color: #E2E8F0;
+    --color-success: #16A34A;
+    --color-danger: #DC2626;
+    --color-warning: #EAB308;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+/* Navbar */
+.navbar-custom {
+    background-color: var(--primary-navy);
+    box-shadow: var(--shadow-md);
+    padding: 0.85rem 1.5rem;
+}
+.navbar-custom .navbar-brand {
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.navbar-custom .nav-link {
+    color: #CBD5E1;
+    font-weight: 500;
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+}
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+    color: #FFFFFF;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Cards & Surfaces */
+.app-card {
+    background: var(--card-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.app-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/* Buttons */
+.btn-primary-custom {
+    background-color: var(--royal-blue);
+    border-color: var(--royal-blue);
+    color: #FFFFFF;
+    font-weight: 600;
+    padding: 0.6rem 1.4rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+    transition: all 0.2s;
+}
+.btn-primary-custom:hover {
+    background-color: var(--royal-blue-hover);
+    border-color: var(--royal-blue-hover);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.35);
+}
+
+/* Drag and Drop Upload Zone */
+.upload-dropzone {
+    border: 2px dashed #94A3B8;
+    background-color: #F8FAFC;
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.upload-dropzone:hover, .upload-dropzone.dragover {
+    border-color: var(--royal-blue);
+    background-color: #EFF6FF;
+}
+.upload-icon {
+    font-size: 3.5rem;
+    color: var(--royal-blue);
+    margin-bottom: 1rem;
+}
+
+/* Screening Badges */
+.badge-screening {
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.badge-genuine {
+    background-color: #DCFCE7;
+    color: var(--color-success);
+    border: 1px solid #86EFAC;
+}
+.badge-anomaly {
+    background-color: #FEE2E2;
+    color: var(--color-danger);
+    border: 1px solid #FCA5A5;
+}
+.badge-inconclusive {
+    background-color: #FEF9C3;
+    color: #A16207;
+    border: 1px solid #FDE047;
+}
+
+/* Comparison Viewer */
+.image-comparison-container {
+    background: #0F172A;
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 260px;
+}
+.comparison-img {
+    max-width: 100%;
+    max-height: 260px;
+    border-radius: 8px;
+    object-fit: contain;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Metric Gauges */
+.metric-box {
+    background: #F8FAFC;
+    border-radius: 10px;
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+}
+.metric-val {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-navy);
+}
+
+/* Official Disclaimer Box */
+.disclaimer-box {
+    background-color: #F1F5F9;
+    border-left: 4px solid var(--royal-blue);
+    padding: 1.1rem 1.25rem;
+    border-radius: 4px;
+    font-size: 0.88rem;
+    color: #475569;
+    line-height: 1.5;
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+    background-color: var(--primary-navy);
+    color: #94A3B8;
+    padding: 1.5rem 0;
+    font-size: 0.85rem;
+}
+

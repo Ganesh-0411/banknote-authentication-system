@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen Banknote | BanknoteGuard DL4J</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/dashboard}">
+            <i class="bi bi-shield-check text-primary"></i>
+            <span>Banknote<span class="text-primary">Guard</span></span>
+        </a>
+        <div class="ms-auto d-flex gap-2">
+            <a class="nav-link text-white" th:href="@{/dashboard}"><i class="bi bi-arrow-left me-1"></i> Back to Dashboard</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4" style="max-width: 760px;">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Banknote Image Screening</h2>
+        <p class="text-muted">Upload an Indian currency note photograph or capture live via camera for Deep Learning Anomaly Detection</p>
+    </div>
+
+    <!-- Error Alert -->
+    <div th:if="${errorMessage}" class="alert alert-danger py-2 small" th:text="${errorMessage}"></div>
+
+    <div class="app-card p-4 p-md-5 mb-4">
+        <form id="banknoteUploadForm" th:action="@{/upload}" method="post" enctype="multipart/form-data">
+            <!-- Denomination Selection -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold small text-uppercase text-muted">Select Currency Denomination</label>
+                <div class="row g-2">
+                    <div class="col-4 col-sm-3 col-md-auto">
+                        <input type="radio" class="btn-check" name="denomination" id="d10" value="10">
+                        <label class="btn btn-outline-secondary w-100" for="d10">&#8377;10</label>
+                    </div>
+                    <div class="col-4 col-sm-3 col-md-auto">
+                        <input type="radio" class="btn-check" name="denomination" id="d20" value="20">
+                        <label class="btn btn-outline-secondary w-100" for="d20">&#8377;20</label>
+                    </div>
+                    <div class="col-4 col-sm-3 col-md-auto">
+                        <input type="radio" class="btn-check" name="denomination" id="d50" value="50">
+                        <label class="btn btn-outline-secondary w-100" for="d50">&#8377;50</label>
+                    </div>
+                    <div class="col-4 col-sm-3 col-md-auto">
+                        <input type="radio" class="btn-check" name="denomination" id="d100" value="100" checked>
+                        <label class="btn btn-outline-secondary w-100" for="d100">&#8377;100</label>
+                    </div>
+                    <div class="col-4 col-sm-3 col-md-auto">
+                        <input type="radio" class="btn-check" name="denomination" id="d200" value="200">
+                        <label class="btn btn-outline-secondary w-100" for="d200">&#8377;200</label>
+                    </div>
+                    <div class="col-4 col-sm-3 col-md-auto">
+                        <input type="radio" class="btn-check" name="denomination" id="d500" value="500">
+                        <label class="btn btn-outline-secondary w-100" for="d500">&#8377;500</label>
+                    </div>
+                    <div class="col-4 col-sm-3 col-md-auto">
+                        <input type="radio" class="btn-check" name="denomination" id="d2000" value="2000">
+                        <label class="btn btn-outline-secondary w-100" for="d2000">&#8377;2000</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drag & Drop Upload Zone -->
+            <div class="upload-dropzone mb-4" id="uploadDropzone">
+                <i class="bi bi-cloud-arrow-up upload-icon"></i>
+                <h5 class="fw-bold mb-1">Drag and drop banknote photograph here</h5>
+                <p class="text-muted small mb-3">Supports JPG, JPEG, and PNG formats up to 20MB</p>
+                <div class="d-flex justify-content-center gap-2">
+                    <label for="banknoteFileInput" class="btn btn-outline-primary btn-sm px-3">
+                        <i class="bi bi-folder2-open me-1"></i> Browse Files
+                    </label>
+                    <button type="button" class="btn btn-outline-dark btn-sm px-3" data-bs-toggle="modal" data-bs-target="#cameraModal" id="startCameraBtn">
+                        <i class="bi bi-camera me-1"></i> Use Camera
+                    </button>
+                </div>
+                <input type="file" id="banknoteFileInput" name="file" accept="image/png, image/jpeg, image/jpg" class="d-none">
+            </div>
+
+            <!-- Image Preview Box -->
+            <div id="previewContainer" class="d-none text-center mb-4">
+                <p class="small fw-semibold text-muted text-uppercase mb-2">Image Preview</p>
+                <div class="p-2 border rounded-3 bg-light d-inline-block shadow-sm">
+                    <img id="imagePreview" src="#" alt="Banknote Preview" style="max-height: 220px; max-width: 100%; border-radius: 6px;">
+                </div>
+            </div>
+
+            <!-- Submit Button & Spinner -->
+            <div class="text-center">
+                <button type="submit" id="submitAnalyzeBtn" class="btn btn-primary-custom btn-lg px-5 w-100" disabled>
+                    <i class="bi bi-cpu me-2"></i> Analyze with CNN Autoencoder
+                </button>
+            </div>
+        </form>
+
+        <!-- Hidden form for camera capture submit -->
+        <form id="cameraCaptureForm" th:action="@{/capture}" method="post" class="d-none">
+            <input type="hidden" name="imageData" id="cameraDataInput">
+            <input type="hidden" name="denomination" value="100">
+        </form>
+    </div>
+
+    <!-- Instructions / Best Practice Guide -->
+    <div class="app-card p-4">
+        <h6 class="fw-bold mb-3"><i class="bi bi-lightbulb text-warning me-2"></i>Image Quality Recommendations</h6>
+        <div class="row g-3 small text-muted">
+            <div class="col-md-4">
+                <strong class="text-dark d-block mb-1"><i class="bi bi-sun me-1 text-primary"></i> Even Lighting</strong>
+                Avoid extreme glare, reflection on metallic security threads, or deep shadows.
+            </div>
+            <div class="col-md-4">
+                <strong class="text-dark d-block mb-1"><i class="bi bi-aspect-ratio me-1 text-primary"></i> Full Note View</strong>
+                Frame the note squarely without folding or severe cropping of currency borders.
+            </div>
+            <div class="col-md-4">
+                <strong class="text-dark d-block mb-1"><i class="bi bi-bullseye me-1 text-primary"></i> Sharp Focus</strong>
+                Ensure the lens is focused so micro-lettering and portrait watermarks are sharp.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Camera Modal -->
+<div class="modal fade" id="cameraModal" tabindex="-1" aria-labelledby="cameraModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title fw-bold" id="cameraModalLabel"><i class="bi bi-camera me-2"></i>Banknote Live Camera Capture</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-3">
+                <video id="cameraVideo" class="w-100 rounded-3 bg-dark" autoplay playsinline style="max-height: 320px;"></video>
+                <canvas id="cameraCanvas" class="d-none"></canvas>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary-custom btn-sm" id="capturePhotoBtn">
+                    <i class="bi bi-camera-fill me-1"></i> Take Photo & Analyze
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="text-center">
+    <div class="container">
+        <p class="mb-0">&copy; 2026 BanknoteGuard DL4J System.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
+

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | BanknoteGuard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/dashboard}">
+            <i class="bi bi-shield-check text-primary"></i>
+            <span>Banknote<span class="text-primary">Guard</span></span>
+        </a>
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navContent">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/dashboard}"><i class="bi bi-grid-fill me-1"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/upload}"><i class="bi bi-camera-fill me-1"></i> Screen Banknote</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/history}"><i class="bi bi-clock-history me-1"></i> History</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link text-warning" th:href="@{/admin}"><i class="bi bi-gear-fill me-1"></i> Admin</a>
+                </li>
+                <li class="nav-item ms-lg-3 dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle fs-5"></i>
+                        <span th:text="${currentUser != null ? currentUser.fullName : 'Account'}">Account</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                        <li><a class="dropdown-item" th:href="@{/profile}"><i class="bi bi-person me-2"></i> Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="dropdown-item text-danger"><i class="bi bi-box-arrow-right me-2"></i> Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <!-- Top Greeting & Quick Action -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+            <h2 class="fw-bold mb-1">Banknote Screening Dashboard</h2>
+            <p class="text-muted mb-0">Overview of deep learning one-class anomaly detection activity</p>
+        </div>
+        <div>
+            <a th:href="@{/upload}" class="btn btn-primary-custom">
+                <i class="bi bi-plus-circle me-1"></i> New Banknote Screen
+            </a>
+        </div>
+    </div>
+
+    <!-- Metric Stat Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="app-card p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small fw-semibold">TOTAL SCANS</span>
+                    <span class="badge bg-primary-subtle text-primary p-2"><i class="bi bi-images"></i></span>
+                </div>
+                <div class="metric-val" th:text="${stats.totalScans}">0</div>
+                <div class="small text-muted">Audited banknotes</div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="app-card p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small fw-semibold">GENUINE-LIKE</span>
+                    <span class="badge bg-success-subtle text-success p-2"><i class="bi bi-check-circle-fill"></i></span>
+                </div>
+                <div class="metric-val text-success" th:text="${stats.genuineLikeScans}">0</div>
+                <div class="small text-muted" th:text="${#numbers.formatDecimal(stats.genuineRate, 1, 1) + '% acceptance rate'}">0%</div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="app-card p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small fw-semibold">ANOMALY DETECTED</span>
+                    <span class="badge bg-danger-subtle text-danger p-2"><i class="bi bi-exclamation-triangle-fill"></i></span>
+                </div>
+                <div class="metric-val text-danger" th:text="${stats.anomalyScans}">0</div>
+                <div class="small text-muted">Deviating visual patterns</div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="app-card p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small fw-semibold">INCONCLUSIVE</span>
+                    <span class="badge bg-warning-subtle text-warning p-2"><i class="bi bi-question-circle-fill"></i></span>
+                </div>
+                <div class="metric-val text-warning" th:text="${stats.inconclusiveScans}">0</div>
+                <div class="small text-muted">Blurry / unreadable quality</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-5">
+            <div class="app-card p-4 h-100">
+                <h6 class="fw-bold mb-3"><i class="bi bi-pie-chart-fill text-primary me-2"></i>Screening Outcome Ratio</h6>
+                <div style="max-height: 250px;" class="d-flex justify-content-center">
+                    <canvas id="outcomeChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="app-card p-4 h-100">
+                <h6 class="fw-bold mb-3"><i class="bi bi-bar-chart-fill text-primary me-2"></i>Scans by Indian Currency Denomination</h6>
+                <div style="max-height: 250px;">
+                    <canvas id="denominationChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Scans Table -->
+    <div class="app-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold mb-0"><i class="bi bi-clock-history text-primary me-2"></i>Recent Banknote Screenings</h6>
+            <a th:href="@{/history}" class="small text-primary fw-semibold text-decoration-none">View All History &rarr;</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small">
+                    <tr>
+                        <th>ID</th>
+                        <th>Denomination</th>
+                        <th>Screening Result</th>
+                        <th>Reconstruction MSE</th>
+                        <th>Threshold</th>
+                        <th>Processing Time</th>
+                        <th>Scanned At</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(recentScans)}">
+                        <td colspan="8" class="text-center text-muted py-4">
+                            No banknote screenings recorded yet. <a th:href="@{/upload}">Screen your first banknote</a>.
+                        </td>
+                    </tr>
+                    <tr th:each="r : ${recentScans}">
+                        <td class="fw-semibold" th:text="'#' + ${r.id}">#1</td>
+                        <td>
+                            <span class="badge bg-secondary" th:text="${'&#8377;' + r.denomination}">&#8377;100</span>
+                        </td>
+                        <td>
+                            <span th:if="${r.screeningResult.name() == 'GENUINE_LIKE'}" class="badge badge-screening badge-genuine">
+                                <i class="bi bi-check-circle-fill"></i> Genuine-Like
+                            </span>
+                            <span th:if="${r.screeningResult.name() == 'ANOMALY_DETECTED'}" class="badge badge-screening badge-anomaly">
+                                <i class="bi bi-exclamation-triangle-fill"></i> Anomaly
+                            </span>
+                            <span th:if="${r.screeningResult.name() == 'INCONCLUSIVE'}" class="badge badge-screening badge-inconclusive">
+                                <i class="bi bi-question-circle-fill"></i> Inconclusive
+                            </span>
+                        </td>
+                        <td class="font-monospace" th:text="${#numbers.formatDecimal(r.mseScore, 1, 5)}">0.01234</td>
+                        <td class="font-monospace text-muted" th:text="${#numbers.formatDecimal(r.anomalyThreshold, 1, 5)}">0.01850</td>
+                        <td class="small text-muted" th:text="${r.processingTimeMs + ' ms'}">120 ms</td>
+                        <td class="small text-muted" th:text="${#temporals.format(r.createdAt, 'yyyy-MM-dd HH:mm')}">2026-11-09</td>
+                        <td class="text-end">
+                            <a th:href="@{'/result/' + ${r.id}}" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-eye"></i> Details
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer class="text-center">
+    <div class="container">
+        <p class="mb-0">&copy; 2026 BanknoteGuard DL4J System. Powered by DeepLearning4J CNN Autoencoder.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+    /* Chart.js Setup */
+    const genuineCount = /*[[${stats.genuineLikeScans}]]*/ 0;
+    const anomalyCount = /*[[${stats.anomalyScans}]]*/ 0;
+    const inconclusiveCount = /*[[${stats.inconclusiveScans}]]*/ 0;
+
+    // Outcome Doughnut Chart
+    new Chart(document.getElementById('outcomeChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Genuine-Like', 'Anomaly Detected', 'Inconclusive'],
+            datasets: [{
+                data: [genuineCount, anomalyCount, inconclusiveCount],
+                backgroundColor: ['#16A34A', '#DC2626', '#EAB308'],
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+
+    // Denomination Bar Chart
+    const denomMap = /*[[${stats.denominationBreakdown}]]*/ {};
+    const denomLabels = Object.keys(denomMap).map(k => '₹' + k);
+    const denomValues = Object.values(denomMap);
+
+    new Chart(document.getElementById('denominationChart'), {
+        type: 'bar',
+        data: {
+            labels: denomLabels.length > 0 ? denomLabels : ['₹10', '₹20', '₹50', '₹100', '₹200', '₹500', '₹2000'],
+            datasets: [{
+                label: 'Scans',
+                data: denomValues.length > 0 ? denomValues : [0, 0, 0, 0, 0, 0, 0],
+                backgroundColor: '#2563EB',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+            }
+        }
+    });
+</script>
+</body>
+</html>
+

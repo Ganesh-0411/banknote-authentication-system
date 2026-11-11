@@ -1,0 +1,2 @@
+-- Schema is automatically generated and managed by Spring Data JPA / Hibernate (ddl-auto=update).
+-- For standalone MySQL 8 database schema, see documentation/database-schema.sql

@@ -1,0 +1,64 @@
+# Compiled class files & build directories
+target/
+**/target/
+*.class
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Virtual Machine Crash Logs
+hs_err_pid*
+replay_pid*
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.recommenders
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+**/out/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.built-jar.stamps
+
+# Visual Studio Code
+.vscode/
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+
+# Dynamic uploads and logs (preserve directory structure but ignore user uploads)
+uploads/*
+!uploads/.gitkeep
+uploads/reconstructed/*
+!uploads/reconstructed/.gitkeep
+uploads/heatmaps/*
+!uploads/heatmaps/.gitkeep
+
+# H2 Database files
+*.mv.db
+*.trace.db
+
+# Maven wrapper downloads
+.m2/
+
